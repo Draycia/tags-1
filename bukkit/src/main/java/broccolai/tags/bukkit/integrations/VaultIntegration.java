@@ -8,6 +8,7 @@ import broccolai.tags.api.model.user.TagsUser;
 import broccolai.tags.api.service.TagsService;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import dev.lone.itemsadder.api.FontImages.FontImageWrapper;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.event.PostOrders;
 import net.kyori.event.method.annotation.PostOrder;
@@ -41,15 +42,16 @@ public final class VaultIntegration implements EventListener {
     public void onUserLogin(final @NonNull UserLoginEvent event) {
         TagsUser user = event.user();
         Tag tag = this.tagsService.load(user);
-
-        this.chat.setPlayerPrefix(null, Bukkit.getPlayer(user.uuid()), LEGACY.serialize(tag.component()));
+        String tagPrefix = FontImageWrapper.replaceFontImages(LEGACY.serialize(tag.component()));
+        this.chat.setPlayerPrefix(null, Bukkit.getPlayer(user.uuid()), tagPrefix);
     }
 
     @Subscribe
     @PostOrder(PostOrders.LATE)
     public void onTagChange(final @NonNull TagChangeEvent event) {
         Player player = Bukkit.getPlayer(event.user().uuid());
-        this.chat.setPlayerPrefix(null, player, LEGACY.serialize(event.tag().component()));
+        String tagPrefix = FontImageWrapper.replaceFontImages(LEGACY.serialize(event.tag().component()));
+        this.chat.setPlayerPrefix(null, Bukkit.getPlayer(player.getUniqueId()), tagPrefix);
     }
 
 }

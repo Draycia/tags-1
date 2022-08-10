@@ -10,6 +10,7 @@ dependencies {
     compileOnly(libs.paper.api)
     compileOnly(libs.papi)
     compileOnly(libs.vault)
+    compileOnly(libs.itemsadder)
 
     api(libs.cloud.paper)
     api(libs.cloud.extras)
